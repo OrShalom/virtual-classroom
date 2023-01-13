@@ -6,22 +6,23 @@ import CardHeader from 'react-bootstrap/esm/CardHeader';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { useDispatch, useSelector } from "react-redux";
 import jsPDF from "jspdf";
-import { renderToString } from "react-dom/server";
+
 import { listPatients,deletePatientAction,StartScreening } from '../../actions/patientsActions';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
+
 import './MyPatients.css'
 
 function MyPatients() {
 
-  const [SessionLengthInMin, setSessionLengthInMin] = useState("");
-  const [LettersDelayInSec, setLettersDelayInSec] = useState("");
-   const [DisturbanceTimeRangeMin, setDisturbanceTimeRangeMin] = useState("");
-   const [DisturbanceTimeRangeMax, setDisturbanceTimeRangeMax] = useState("");
-   const [AmountOfShouldPress, setAmountOfShouldPress] = useState("");
+   const [SessionLengthInMin, setSessionLengthInMin] = useState("1");
+   const [LettersDelayInSec, setLettersDelayInSec] = useState("15");
+   const [DisturbanceTimeRangeMin, setDisturbanceTimeRangeMin] = useState("10");
+   const [DisturbanceTimeRangeMax, setDisturbanceTimeRangeMax] = useState("10");
+   const [AmountOfShouldPress, setAmountOfShouldPress] = useState("1");
 
   const [search, setSearch] = useState("");
-
+  let patientID = "";
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -37,6 +38,14 @@ function MyPatients() {
   const patientUpdate = useSelector((state) => state.patientUpdate);
   const { success: successUpdate } = patientUpdate;
 
+
+  const startScreen = useSelector((state) => state.startScreen);
+  const {loading:StartSceenLoading, success: successStartSceen ,msg} = startScreen;
+ 
+
+  // const startScreen = useSelector((state) => state.startScreen);
+  // const {loading:StartSceenLoading, success: successStartSceen ,meg} = startScreen;
+
   const patientDelete = useSelector((state) => state.patientDelete);
   const {
     loading: loadingDelete,
@@ -44,6 +53,7 @@ function MyPatients() {
     success: successDelete,
   } = patientDelete;
 
+ 
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
@@ -112,10 +122,11 @@ function MyPatients() {
       {loading && <Loading />}
       {loadingDelete && <Loading />}
       {patients &&
-           patients.filter((filteredPatient) =>
+        patients.filter((filteredPatient) =>
            filteredPatient.title.toLowerCase().includes(search.toLowerCase())
          )
-              .reverse().map((patient) => (
+        .reverse().map((patient) => (
+                
                 <Accordion  key={patient._id} >
                     <Card style={{ margin: 10 }} >
                        <CustomToggle eventKey="0" >
@@ -133,9 +144,7 @@ function MyPatients() {
                               {patient.title}
                                       </Accordion.Item>
                                       </div>           
-                         </span>
-                        
-                                  
+                         </span>     
                           </CardHeader>
                           </CustomToggle>
                           <Accordion.Collapse eventKey="0">
@@ -199,12 +208,16 @@ function MyPatients() {
                             </div>
                             </div>
                           <div style={{float:"right"}}>
-                          <Button  href={`/screening/${patient._id}`}
+                      <Button
+                        href={`/screening/${patient._id}`}
+                       
                             className="mx-2"
                             variant="success"
                             onClick={() => {
-                                window.confirm("The scan starts");
-                                return dispatch(StartScreening(patient));
+                              window.confirm("The scan starts");
+                             patientID = patient._id;
+                            console.log(successStartSceen)
+                                 dispatch(StartScreening(patientID,SessionLengthInMin, LettersDelayInSec, DisturbanceTimeRangeMin, DisturbanceTimeRangeMax, AmountOfShouldPress, patient));
                             }}>start screening</Button>
                           <Button href={`/ScanHistory/${patient._id}`}
                             className="mx-2"

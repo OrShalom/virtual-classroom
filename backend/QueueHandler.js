@@ -52,7 +52,7 @@ class QueueHandler {
 
         channel.consume(queue, (msg) => {
           console.log(" [x] Received %s", msg.content.toString());
-          if(callback)callback();
+          if(callback)callback(msg.content.toString());
         }, {
           noAck: true
         });

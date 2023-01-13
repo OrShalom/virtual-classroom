@@ -11,6 +11,11 @@ import {
   PATIENTS_DELETE_REQUEST,
   PATIENTS_DELETE_SUCCESS,
   PATIENTS_DELETE_FAIL,
+  PATIENTS_START_SCREEN_REQUEST,
+  PATIENTS_START_SCREEN_SUCCESS,
+  PATIENTS_REPORT_REQUEST,
+  PATIENTS_REPORT_SUCCESS,
+  PATIENTS_REPORT_FAIL,
   } from "../constants/patientsConstants";
 import axios from "axios";
 
@@ -19,6 +24,7 @@ export const listPatients = () => async (dispatch, getState) => {
     dispatch({
       type: PATIENTS_LIST_REQUEST,
     });
+
 
     const {
       userLogin: { userInfo },
@@ -36,6 +42,7 @@ export const listPatients = () => async (dispatch, getState) => {
       type: PATIENTS_LIST_SUCCESS,
       payload: data,
     });
+   
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -43,6 +50,39 @@ export const listPatients = () => async (dispatch, getState) => {
         : error.message;
     dispatch({
       type: PATIENTS_LIST_FAIL,
+      payload: message,
+    });
+  }
+};
+export const reportsPatients = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PATIENTS_REPORT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/patients/report/${id}`, config);
+
+    dispatch({
+      type: PATIENTS_REPORT_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: PATIENTS_REPORT_FAIL,
       payload: message,
     });
   }
@@ -167,11 +207,17 @@ export const deletePatientAction = (id) => async (dispatch, getState) => {
   }
 };
 
-export const StartScreening = (patient) => async (dispatch, getState) => {
+export const StartScreening = (patientID,SessionLengthInMin, LettersDelayInSec, DisturbanceTimeRangeMin, DisturbanceTimeRangeMax, AmountOfShouldPress, patient) => async (dispatch, getState) => {
+ 
   try {
+    dispatch({
+      type: PATIENTS_START_SCREEN_REQUEST,
+    });
     const {
       userLogin: { userInfo },
     } = getState();
+
+      localStorage.setItem("startSceen", "false");
 
     const config = {
       headers: {
@@ -180,8 +226,18 @@ export const StartScreening = (patient) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(
-      "/api/users/startScreening",
-      {patient},config);
+      `/api/users/startScreening`,
+      { patientID,SessionLengthInMin, LettersDelayInSec, DisturbanceTimeRangeMin, DisturbanceTimeRangeMax, AmountOfShouldPress, patient },config
+    );
+    localStorage.setItem("startSceen", "true");
+    dispatch({
+      type: PATIENTS_START_SCREEN_SUCCESS,
+      payload: data,
+    });
+    //localStorage.setItem("startSceen", "true");
+    // const { data } = await axios.post(
+    //   "/api/users/startScreening",
+    //   {patient},config);
 
     return true;
   } catch (error) {

@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect } from 'react';
 import './StartScreening.css'
 import { Spinner, Container, Button } from "react-bootstrap";
 import { StopScreening } from '../../actions/patientsActions';
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
+import { useNavigate,useParams} from 'react-router-dom';
 
 export const StartScreening = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+ const { id} = useParams();
+
+ const reportsList = useSelector((state) => state.patientReports);
+ const { loading, reports, error } = reportsList;
+ dispatch(reportsPatients(id));
+
+  useEffect(() => {
+ 
+    dispatch(reportsPatients(id));
+    // if (successStartSceen=="false") {
+    //   navigate(`/ScanHistory/:${id}`);
+    // }
+
+  },[dispatch])
+  
     return (
         <Container className="startScreen">
             <Spinner animation="grow" variant="warning" />

@@ -3,7 +3,9 @@ const User = require('../models/userModel');
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
 const QueueHandler = require('../QueueHandler');
-
+const Report = require('../models/reportModel');
+//const Patient = require('../models/PatientModel');
+const Patient = require("../models/patientModel");
 
 const registerUser = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
@@ -84,34 +86,72 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
 const StartScreening = async (req, res) => {
   let queueHandler = new QueueHandler()
-  const {patient:{ firstName, lastName, email} } = req.body;
-  const StartSessionMessage ={
+  // const { patient: { firstName, lastName, email } } = req.body;
+  const { patientID,SessionLengthInMin, LettersDelayInSec, DisturbanceTimeRangeMin, DisturbanceTimeRangeMax,AmountOfShouldPress,patient  } = req.body;
+ const StartSessionMessage ={
     SessionConfiguration: {
-      SessionLengthInMin : 5,
-      LettersDelayInSec : 1,
-      DisturbanceTimeRangeMin : 5,
-      DisturbanceTimeRangeMax :5,
-      AmountOfShouldPress :12
-      },
+      SessionLengthInMin: SessionLengthInMin,
+      LettersDelayInSec: LettersDelayInSec,
+      DisturbanceTimeRangeMin: DisturbanceTimeRangeMin,
+      DisturbanceTimeRangeMax: DisturbanceTimeRangeMax,
+      AmountOfShouldPress:AmountOfShouldPress,
+   },
+  
+  // const StartSessionMessage ={
+  //   SessionConfiguration: {
+  //     SessionLengthInMin : 5,
+  //     LettersDelayInSec : 1,
+  //     DisturbanceTimeRangeMin : 5,
+  //     DisturbanceTimeRangeMax :5,
+  //     AmountOfShouldPress :12
+  //     },
     Patient: 
     { 
-      firstName:firstName, 
-      lastName:lastName, 
-      email:email}
+      firstName:patient.firstName, 
+      lastName:patient.lastName, 
+      email:patient.email}
   }
+
   queueHandler.sendMessage('StartScreening', JSON.stringify(StartSessionMessage));
-  /*queueHandler.receiveMessages('FinishScreening',(msg) =>{
+  queueHandler.receiveMessages('FinishScreening', async (msg) => {
+    const rep = JSON.parse(msg)
+    const report = await Report.create({
+      Time: rep.Time,
+      PatientId: rep.PatientId,
+      WithoutlettersDataList: JSON.stringify(rep.SessionWithoutDisturbances.lettersDataList.join()),
+      WithoutPressedAndshould: JSON.stringify(rep.SessionWithoutDisturbances.PressedAndshould.join()),
+      WithoutPressedAndshouldNot: JSON.stringify(rep.SessionWithoutDisturbances.PressedAndshouldNot.join()),
+      WithoutNotPressedAndshould: JSON.stringify(rep.SessionWithoutDisturbances.NotPressedAndshould.join()),
+      WithoutHeadRotation: JSON.stringify(rep.SessionWithoutDisturbances.HeadRotation.join()),
+      WithlettersDataList: JSON.stringify(rep.SessionWithDisturbances.lettersDataList.join()),
+      WithPressedAndshould: JSON.stringify(rep.SessionWithDisturbances.PressedAndshould.join()),
+      WithPressedAndshouldNot: JSON.stringify(rep.SessionWithDisturbances.PressedAndshouldNot.join()),
+      WithNotPressedAndshould: JSON.stringify(rep.SessionWithDisturbances.NotPressedAndshould.join()),
+      WithHeadRotation: JSON.stringify(rep.SessionWithDisturbances.HeadRotation.join()),
+      DisturbancesMetadata:JSON.stringify(rep.SessionWithDisturbances.DisturbancesMetadata),
+      patient:patientID,
+    }
     
-  })*/
-  //console.log(email);
-  res.status(200);
-  res.send();
+    );
+    console.log(rep.Time)
+    res.status(200);
+    res.send();
+  
+  })
+  // const patientM = await Patient.findById(patientID);
+  // const report = new Report({ patient: patientM._id, firstName:"hu" });
+    
+  // const createPatient = await report.save();
+  // res.json({
+  //   firstName: "hi",
+  //   lastName:"updatedUser.lastName",
+  // });
+  
 };
 
 const StopScreening = async (req, res) => {
   let queueHandler = new QueueHandler()
   queueHandler.sendMessage('StopScreening', '');
-  //console.log(email);
   res.status(200);
   res.send();
 };

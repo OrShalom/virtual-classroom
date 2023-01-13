@@ -5,3 +5,10 @@
     padding: 30px;
     flex-direction: column;
 }
+.div-input-history{
+    display: flex; 
+    flex-direction: row
+}
+.div-input-web-history{
+    padding-right: 10px;
+}

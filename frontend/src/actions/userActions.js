@@ -8,7 +8,8 @@ import {
     USER_REGISTER_SUCCESS,
   USER_UPDATE_FAIL,
     USER_UPDATE_REQUEST,
-    USER_UPDATE_SUCCESS,
+  USER_UPDATE_SUCCESS,
+
   } from "../constants/userConstants";
 
 
@@ -30,9 +31,9 @@ export const login = (email, password) => async (dispatch) => {
         config
       );
   
+      localStorage.setItem("userInfo", JSON.stringify(data));
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
   
-      localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {
       dispatch({
         type: USER_LOGIN_FAIL,

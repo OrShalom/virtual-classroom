@@ -10,7 +10,12 @@ import {
     PATIENTS_CREATE_REQUEST,
     PATIENTS_LIST_REQUEST,
     PATIENTS_LIST_SUCCESS,
-    PATIENTS_LIST_FAIL,
+  PATIENTS_LIST_FAIL,
+  PATIENTS_START_SCREEN_REQUEST,
+  PATIENTS_START_SCREEN_SUCCESS,
+  PATIENTS_REPORT_REQUEST,
+  PATIENTS_REPORT_SUCCESS,
+  PATIENTS_REPORT_FAIL,
   } from "../constants/patientsConstants";
   
   export const patientsListReducer = (state = { patients: [] }, action) => {
@@ -26,7 +31,19 @@ import {
         return state;
     }
   };
+  export const patientsReporsReducer = (state = { reports: [] }, action) => {
+    switch (action.type) {
+      case PATIENTS_REPORT_REQUEST:
+        return { loading: true };
+      case PATIENTS_REPORT_SUCCESS:
+        return { loading: false, reports: action.payload };
+      case PATIENTS_REPORT_FAIL:
+        return { loading: false, error: action.payload };
   
+      default:
+        return state;
+    }
+  };
 
   export const patientsCreateReducer = (state = {}, action) => {
     switch (action.type) {
@@ -65,6 +82,16 @@ export const patientDeleteReducer = (state = {}, action) => {
     case PATIENTS_DELETE_FAIL:
       return { loading: false, error: action.payload, success: false };
 
+    default:
+      return state;
+  }
+};
+export const patientStartScreenReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PATIENTS_START_SCREEN_REQUEST:
+      return { loading: true,success: false };
+    case PATIENTS_START_SCREEN_SUCCESS:
+      return { loading: false, msg: action.payload, success: true };
     default:
       return state;
   }

@@ -1,6 +1,7 @@
 const Patient = require("../models/patientModel");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
+const Report = require("../models/reportModel");
 
 const getPatients = asyncHandler(async (req, res) => {
   const user = await User.findOne({ user: req.user._id })
@@ -15,6 +16,16 @@ const getPatients = asyncHandler(async (req, res) => {
   }
     
 });
+
+const getReports = asyncHandler(async (req, res) => {
+
+  const { id } = req.params;
+  const reports = await Report.find({patient:id})
+    res.json(reports);
+    
+});
+
+
 
 const createPatient = asyncHandler(async (req, res) => {
     const {  firstName, lastName, id, dateOfBirth, gander, email, recommendation, report, medicines } = req.body;
@@ -109,4 +120,4 @@ const deletePatient = asyncHandler(async (req, res) => {
     }
 
 }); 
-module.exports = { getPatients ,createPatient,getPatientById,updatePatient,deletePatient};
+module.exports = { getReports,getPatients ,createPatient,getPatientById,updatePatient,deletePatient};

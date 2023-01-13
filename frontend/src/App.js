@@ -26,7 +26,7 @@ const App = () => (
         <Route path="/patients/:id" element={<SingelPatient />} exact />
         <Route path="/profile" element={<ProfileScreen/>} exact/>
         <Route path="/patients" element={<MyPatients />} />
-        <Route path="/screening/:id" element={<StartScreening />} exact />
+        <Route path="/screening/:id" element={<StartScreening />}  />
         <Route path="/ScanHistory/:id" element={<ScanHistory/>}exact />
       </Routes>
       

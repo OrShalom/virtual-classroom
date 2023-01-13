@@ -8,7 +8,7 @@ import {
     USER_REGISTER_SUCCESS,
     USER_UPDATE_FAIL,
     USER_UPDATE_REQUEST,
-    USER_UPDATE_SUCCESS,
+  USER_UPDATE_SUCCESS,
   } from "../constants/userConstants";
   
   export const userLoginReducer = (state = {}, action) => {
@@ -50,4 +50,4 @@ import {
       default:
         return state;
     }
-  };
+};
