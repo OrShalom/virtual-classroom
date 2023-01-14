@@ -23,7 +23,11 @@ const reportSchema = mongoose.Schema(
             type: String,
             required: false,
         },
-        WithoutNotPressedAndshould: {
+        WithoutTimesOfShouldPress: {
+            type: String,
+            required: false,
+        },
+        WithoutHeadRotation: {
             type: String,
             required: false,
         },
@@ -40,6 +44,10 @@ const reportSchema = mongoose.Schema(
             required: false,
         },
         WithPressedAndshouldNot: {
+            type: String,
+            required: false,
+        },
+        WithTimesOfShouldPress: {
             type: String,
             required: false,
         },

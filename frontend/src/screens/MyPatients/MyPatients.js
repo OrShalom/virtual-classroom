@@ -5,7 +5,7 @@ import { Accordion, Button, Card,Form } from 'react-bootstrap';
 import CardHeader from 'react-bootstrap/esm/CardHeader';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { useDispatch, useSelector } from "react-redux";
-import jsPDF from "jspdf";
+
 
 import { listPatients,deletePatientAction,StartScreening } from '../../actions/patientsActions';
 import Loading from '../../components/Loading';
@@ -16,10 +16,10 @@ import './MyPatients.css'
 function MyPatients() {
 
    const [SessionLengthInMin, setSessionLengthInMin] = useState("1");
-   const [LettersDelayInSec, setLettersDelayInSec] = useState("15");
-   const [DisturbanceTimeRangeMin, setDisturbanceTimeRangeMin] = useState("10");
-   const [DisturbanceTimeRangeMax, setDisturbanceTimeRangeMax] = useState("10");
-   const [AmountOfShouldPress, setAmountOfShouldPress] = useState("1");
+   const [LettersDelayInSec, setLettersDelayInSec] = useState("10");
+   const [DisturbanceTimeRangeMin, setDisturbanceTimeRangeMin] = useState("15");
+   const [DisturbanceTimeRangeMax, setDisturbanceTimeRangeMax] = useState("20");
+   const [AmountOfShouldPress, setAmountOfShouldPress] = useState("2");
 
   const [search, setSearch] = useState("");
   let patientID = "";
@@ -209,7 +209,7 @@ function MyPatients() {
                             </div>
                           <div style={{float:"right"}}>
                       <Button
-                        href={`/screening/${patient._id}`}
+                        // href={`/screening/${patient._id}`}
                        
                             className="mx-2"
                             variant="success"
@@ -217,7 +217,8 @@ function MyPatients() {
                               window.confirm("The scan starts");
                              patientID = patient._id;
                             console.log(successStartSceen)
-                                 dispatch(StartScreening(patientID,SessionLengthInMin, LettersDelayInSec, DisturbanceTimeRangeMin, DisturbanceTimeRangeMax, AmountOfShouldPress, patient));
+                              dispatch(StartScreening(patientID, SessionLengthInMin, LettersDelayInSec, DisturbanceTimeRangeMin, DisturbanceTimeRangeMax, AmountOfShouldPress, patient));
+                              navigate(`/screening/${patient._id}`)
                             }}>start screening</Button>
                           <Button href={`/ScanHistory/${patient._id}`}
                             className="mx-2"
@@ -230,16 +231,6 @@ function MyPatients() {
                                       onClick={()=>deleteHandler(patient._id)}
                           >Delete</Button>
                             
-                       
-                          <Button onClick={() => {
-                            let string = `${patient.firstName} ${patient.lastName} - ${patient.id}\n\nFirst name: ${patient.firstName}\nLast name: ${patient.lastName}\n`;
-                            string=string+`ID: ${patient.id}\n Gander: ${patient.gander}\n`
-                      const pdf = new jsPDF("p", "mm", "a4");
-                            pdf.text(100, 20, string);
-                      pdf.save(`${patient.id}`);
-                            }
-                          }
-                          >PDF</Button>
                                   </div>
                       <footer className="blockquote-footer">
                         Created on Date {patient.createdAt.substring(0, 10)}

@@ -1,27 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState} from 'react';
 import './StartScreening.css'
 import { Spinner, Container, Button } from "react-bootstrap";
-import { StopScreening } from '../../actions/patientsActions';
+import { StopScreening,startScreen} from '../../actions/patientsActions';
 import { useDispatch,useSelector } from "react-redux";
-import { useNavigate,useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { reportsPatients } from '../../actions/patientsActions';
 
 export const StartScreening = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
- const { id} = useParams();
+  const { id } = useParams();
 
- const reportsList = useSelector((state) => state.patientReports);
- const { loading, reports, error } = reportsList;
- dispatch(reportsPatients(id));
-
+  const startScreen = useSelector((state) => state.startScreen);
+  const {loading:StartSceenLoading, success: successStartSceen ,msg} = startScreen;
+ 
   useEffect(() => {
  
-    dispatch(reportsPatients(id));
-    // if (successStartSceen=="false") {
-    //   navigate(`/ScanHistory/:${id}`);
-    // }
+   if(successStartSceen===true)
+    navigate(`/ScanHistory/${id}`);
+    
 
-  },[dispatch])
+  },[successStartSceen])
   
     return (
         <Container className="startScreen">

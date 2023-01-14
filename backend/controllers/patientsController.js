@@ -63,6 +63,17 @@ const getPatientById = asyncHandler(async (req, res) => {
   
     
 });
+const getReportById = asyncHandler(async (req, res) => {
+  const report = await Report.findById(req.params.id);
+
+  if (report) {
+    res.json(report);
+  } else {
+    res.status(404).json({ message: "report not found" });
+  }
+
+  
+});
   
 
 const updatePatient = asyncHandler(async (req, res) => {
@@ -120,4 +131,4 @@ const deletePatient = asyncHandler(async (req, res) => {
     }
 
 }); 
-module.exports = { getReports,getPatients ,createPatient,getPatientById,updatePatient,deletePatient};
+module.exports = { getReportById,getReports,getPatients ,createPatient,getPatientById,updatePatient,deletePatient};

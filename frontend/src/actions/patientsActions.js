@@ -70,7 +70,7 @@ export const reportsPatients = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/patients/report/${id}`, config);
+    const { data } = await axios.get(`/api/patients/reports/${id}`, config);
 
     dispatch({
       type: PATIENTS_REPORT_SUCCESS,

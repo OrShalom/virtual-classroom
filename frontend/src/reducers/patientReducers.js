@@ -16,6 +16,10 @@ import {
   PATIENTS_REPORT_REQUEST,
   PATIENTS_REPORT_SUCCESS,
   PATIENTS_REPORT_FAIL,
+  PATIENTS_REPORTID_REQUEST,
+  PATIENTS_REPORTID_SUCCESS,
+  PATIENTS_REPORTID_FAIL,
+
   } from "../constants/patientsConstants";
   
   export const patientsListReducer = (state = { patients: [] }, action) => {
@@ -96,3 +100,5 @@ export const patientStartScreenReducer = (state = {}, action) => {
       return state;
   }
 };
+
+

@@ -122,13 +122,15 @@ const StartScreening = async (req, res) => {
       WithoutPressedAndshould: JSON.stringify(rep.SessionWithoutDisturbances.PressedAndshould.join()),
       WithoutPressedAndshouldNot: JSON.stringify(rep.SessionWithoutDisturbances.PressedAndshouldNot.join()),
       WithoutNotPressedAndshould: JSON.stringify(rep.SessionWithoutDisturbances.NotPressedAndshould.join()),
-      WithoutHeadRotation: JSON.stringify(rep.SessionWithoutDisturbances.HeadRotation.join()),
+      WithoutHeadRotation: JSON.stringify(rep.SessionWithoutDisturbances.HeadRotation),
+      WithoutTimesOfShouldPress: JSON.stringify(rep.SessionWithoutDisturbances.TimesOfShouldPress.join()),
       WithlettersDataList: JSON.stringify(rep.SessionWithDisturbances.lettersDataList.join()),
       WithPressedAndshould: JSON.stringify(rep.SessionWithDisturbances.PressedAndshould.join()),
       WithPressedAndshouldNot: JSON.stringify(rep.SessionWithDisturbances.PressedAndshouldNot.join()),
       WithNotPressedAndshould: JSON.stringify(rep.SessionWithDisturbances.NotPressedAndshould.join()),
-      WithHeadRotation: JSON.stringify(rep.SessionWithDisturbances.HeadRotation.join()),
-      DisturbancesMetadata:JSON.stringify(rep.SessionWithDisturbances.DisturbancesMetadata),
+      WithHeadRotation: JSON.stringify(rep.SessionWithDisturbances.HeadRotation),
+      WithTimesOfShouldPress: JSON.stringify(rep.SessionWithDisturbances.TimesOfShouldPress.join()),
+      DisturbancesMetadata:JSON.stringify(rep.DisturbancesMetadata),
       patient:patientID,
     }
     

@@ -1,6 +1,6 @@
 
 const express = require('express');
-const { getPatients,createPatient,getPatientById,updatePatient,deletePatient, getReports } = require('../controllers/patientsController');
+const { getReportById,getPatients,createPatient,getPatientById,updatePatient,deletePatient, getReports } = require('../controllers/patientsController');
 const { protect } =require( "../middleware/authMiddleware.js");
 
 const router = express.Router();
@@ -8,7 +8,9 @@ const router = express.Router();
 //get all patients
 router.route('/').get(protect ,getPatients);
 
-router.route('/report/:id').get(getReports);
+router.route('/reports/:id').get(getReports);
+
+router.route('/report/:id').get(getReportById);
 
 //create new patient
 router.route('/create').post(protect,createPatient);
