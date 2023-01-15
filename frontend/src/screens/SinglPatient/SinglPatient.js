@@ -160,7 +160,7 @@ function SingelPatient() {
                 }
                           />
                           
-                      </Form.Group>id
+                      </Form.Group>
                       <Form.Group controlId="content">
                           
               <Form.Label>Email</Form.Label>

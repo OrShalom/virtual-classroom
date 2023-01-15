@@ -63,6 +63,31 @@ const reportSchema = mongoose.Schema(
             type: String,
             required: false,
         },
+        PatientName: {
+            type: String,
+            required: false,
+        },
+        SessionLengthInMin: {
+            type: String,
+            required: false,
+        },
+        LettersDelayInSec: {
+            type: String,
+            required: false,
+        },
+        disturbanceTimeRangeMin: {
+            type: String,
+            required: false,
+        },
+        disturbanceTimeRangeMax: {
+            type: String,
+            required: false,
+        },
+        amountOfShouldPress: {
+            type: String,
+            required: false,
+        },
+        
         patient: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,

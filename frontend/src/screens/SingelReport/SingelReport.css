@@ -1,9 +1,14 @@
 .h1-report{
-    display: flex;
-    justify-content:center;
+    /* display: flex;
+    justify-content:center; */
 }
 
 .div-export-button{
     display: flex;
-    justify-content: center;
+    justify-content: right;
+}
+.div-report{
+    padding-right: 10px;
+    /* padding-left: 150px; */
+    width: -webkit-fill-available;
 }

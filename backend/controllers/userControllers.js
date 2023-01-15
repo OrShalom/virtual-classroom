@@ -130,7 +130,13 @@ const StartScreening = async (req, res) => {
       WithNotPressedAndshould: JSON.stringify(rep.SessionWithDisturbances.NotPressedAndshould.join()),
       WithHeadRotation: JSON.stringify(rep.SessionWithDisturbances.HeadRotation),
       WithTimesOfShouldPress: JSON.stringify(rep.SessionWithDisturbances.TimesOfShouldPress.join()),
-      DisturbancesMetadata:JSON.stringify(rep.DisturbancesMetadata),
+      DisturbancesMetadata: JSON.stringify(rep.DisturbancesMetadata),
+      PatientName: rep.PatientName,
+      SessionLengthInMin: JSON.stringify(rep.SessionConfiguration.SessionLengthInMin),
+      LettersDelayInSec: JSON.stringify(rep.SessionConfiguration.LettersDelayInSec), 
+      disturbanceTimeRangeMin: JSON.stringify(rep.SessionConfiguration.disturbanceTimeRangeMin), 
+      disturbanceTimeRangeMax: JSON.stringify(rep.SessionConfiguration.disturbanceTimeRangeMax),
+      amountOfShouldPress: JSON.stringify(rep.SessionConfiguration.amountOfShouldPress),
       patient:patientID,
     }
     
